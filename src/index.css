@@ -1,16 +1,20 @@
 :root {
   --black: #0f172a;
   --white: #ffffff;
-  --cream: #f0f7ff; /* Latar belakang biru muda yang sangat soft */
+  --cream: #f0f7ff;
+  /* Latar belakang biru muda yang sangat soft */
   --ink: #1e293b;
   --muted: #64748b;
   --border: #e2e8f0;
-  
+
   /* Aksentuasi Biru Muda Modern */
-  --accent: #0ea5e9;       /* Sky Blue */
-  --accent-light: #e0f2fe; /* Light Sky Blue */
-  --accent-mid: #0284c7;   /* Medium Blue */
-  
+  --accent: #0ea5e9;
+  /* Sky Blue */
+  --accent-light: #e0f2fe;
+  /* Light Sky Blue */
+  --accent-mid: #0284c7;
+  /* Medium Blue */
+
   --found: #059669;
   --found-bg: #ecfdf5;
   --lost: #dc2626;
@@ -20,7 +24,14 @@
   --r: 12px;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--white);
@@ -28,24 +39,188 @@ body {
   font-size: 15px;
   line-height: 1.6;
 }
-h1,h2,h3,h4 { font-family: 'Sora', sans-serif; color: var(--black); }
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Sora', sans-serif;
+  color: var(--black);
+}
 
 /* Utility Classes yang sering dipakai */
-.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-.btn { display: inline-flex; align-items: center; gap: 0.5rem; border: none; border-radius: var(--r); padding: 0.7rem 1.4rem; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all .18s; font-family: 'DM Sans', sans-serif; text-decoration: none; }
-.btn-primary { background: var(--ink); color: var(--white); }
-.btn-primary:hover { background: #0f172a; transform: translateY(-1px); }
-.btn-secondary { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
-.btn-secondary:hover { background: var(--cream); border-color: var(--accent); }
-.btn-accent { background: var(--accent); color: var(--white); }
-.btn-accent:hover { background: var(--accent-mid); }
-.badge { display: inline-block; padding: 0.25rem 0.65rem; border-radius: 20px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; }
-.badge-found { background: var(--found-bg); color: var(--found); }
-.badge-lost { background: var(--lost-bg); color: var(--lost); }
-.badge-pending { background: var(--pending-bg); color: var(--pending); }
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: var(--r);
+  padding: 0.7rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .18s;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: #0f172a;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--cream);
+  border-color: var(--accent);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--white);
+}
+
+.btn-accent:hover {
+  background: var(--accent-mid);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-found {
+  background: var(--found-bg);
+  color: var(--found);
+}
+
+.badge-lost {
+  background: var(--lost-bg);
+  color: var(--lost);
+}
+
+.badge-pending {
+  background: var(--pending-bg);
+  color: var(--pending);
+}
 
 /* Form Control */
-.form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
-.form-label { font-size: 0.82rem; font-weight: 600; color: var(--ink); }
-.form-input, .form-select, .form-textarea { border: 1.5px solid var(--border); border-radius: var(--r); padding: 0.65rem 0.9rem; font-size: 0.9rem; outline: none; width: 100%; transition: all 0.2s; }
-.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+/* Efek animasi hover profesional untuk komponen kartu/ikon di LostLynk */
+.search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon-anim {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+/* Saat wadah input didekati, buat ikon kaca pembesar membesar & sedikit berputar */
+.search-container:hover .search-icon-anim {
+  transform: scale(1.25) rotate(10deg);
+  color: var(--accent);
+}
+
+/* Animasi Denyut Lembut untuk Skeleton Loading LostLynk */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .4;
+  }
+}
+
+.shimmer {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Animasi toast menyembul dari atas */
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Spinner berputar untuk tombol loading */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ffffff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
