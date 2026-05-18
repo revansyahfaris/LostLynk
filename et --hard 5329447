@@ -1,0 +1,5 @@
+[33mb0b9b2c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: commit: feat: implementasi fitur CRUD penuh dengan sistem soft delete dan hard delete pada dashboard admin
+[33m714d3aa[m HEAD@{1}: commit: feat: implementasi fitur live search filter pada dashboard kendali admin
+[33m2e14325[m HEAD@{2}: commit: feat: optimalisasi penuh animasi ui interaktif dan dummy data lostlynk
+[33m5329447[m HEAD@{3}: Branch: renamed refs/heads/master to refs/heads/main
+[33m5329447[m HEAD@{5}: commit (initial): feat: migrasi lostlynk ke react vite tema biru muda
