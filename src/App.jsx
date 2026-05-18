@@ -1,38 +1,53 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import Login from './pages/Login';
 import Beranda from './pages/Beranda';
 import CariBarang from './pages/CariBarang';
-import LaporBarang from './pages/Lapor'; // Sesuai nama filemu di folder: Lapor.jsx
+import Lapor from './pages/Lapor';
 import LaporanSaya from './pages/LaporanSaya';
+import AdminDashboard from './pages/AdminDashboard';
 
-const App = () => {
-  const [currentPage, setCurrentPage] = useState('login'); 
+function App() {
+  const [userSession, setUserSession] = useState(null); // Menyimpan session user { name, role }
+  const [view, setView] = useState('beranda');
 
-  const navigateTo = (pageName) => {
-    setCurrentPage(pageName);
-    window.scrollTo(0, 0); 
+  // Callback penentu arah halaman setelah sukses login
+  const handleLoginSuccess = (session) => {
+    setUserSession(session);
+
+    // REDIRECTION LOGIC CERDAS:
+    if (session.role === 'admin') {
+      setView('admin'); // Admin langsung mendarat di Dashboard Kendali Logistik
+    } else {
+      setView('beranda'); // Mahasiswa via SSO mendarat di Beranda Utama
+    }
   };
 
-  if (currentPage === 'login') {
-    return <Login onLogin={() => navigateTo('beranda')} />;
+  // Fungsi Logout untuk membersihkan session
+  const handleLogout = () => {
+    setUserSession(null);
+    setView('beranda');
+  };
+
+  // PROTEKSI KEDUA: Jika sesi kosong, kunci tampilan dan paksa ke Halaman Login
+  if (!userSession) {
+    return <Login onLoginSuccess={handleLoginSuccess} />;
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar currentPage={currentPage} onNavigate={navigateTo} />
-      
-      <main style={{ flex: 1, paddingBottom: '3rem' }}>
-        {currentPage === 'beranda' && <Beranda onNavigate={navigateTo} />}
-        {currentPage === 'cari' && <CariBarang />}
-        {currentPage === 'lapor' && <LaporBarang onNavigate={navigateTo} />}
-        {currentPage === 'laporan-saya' && <LaporanSaya />}
-      </main>
+    <div className="app-layout" style={{ minHeight: '100vh', background: '#f8fafc', color: '#1e293b' }}>
+      {/* Navbar mendeteksi session aktif untuk menyembunyikan/memunculkan menu */}
+      <Navbar currentView={view} onNavigate={setView} userRole={userSession.role} onLogout={handleLogout} />
 
-      <Footer />
+      <main style={{ paddingBottom: '4rem' }}>
+        {view === 'beranda' && <Beranda onNavigate={setView} />}
+        {view === 'cari' && <CariBarang />}
+        {view === 'lapor' && <Lapor onNavigate={setView} />}
+        {view === 'laporan-saya' && <LaporanSaya />}
+        {view === 'admin' && <AdminDashboard />}
+      </main>
     </div>
   );
-};
+}
 
 export default App;

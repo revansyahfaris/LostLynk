@@ -22,6 +22,7 @@ const Lapor = ({ onNavigate }) => {
     if (!namaBarang || !deskripsi) {
       alert('Harap isi nama barang dan deskripsi terlebih dahulu ya!');
       return;
+
     }
 
     setIsSubmitting(true);
@@ -32,6 +33,8 @@ const Lapor = ({ onNavigate }) => {
       onNavigate('laporan-saya'); // Langsung pindah ke daftar laporan saya
     }, 1500);
   };
+
+
 
   return (
     <div className="container" style={{ paddingTop: '2rem' }}>

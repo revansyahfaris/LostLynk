@@ -1,68 +1,104 @@
 import React from 'react';
 
-const Navbar = ({ currentPage, onNavigate }) => {
+const Navbar = ({ currentView, onNavigate, userRole, onLogout }) => {
+    // Array konfigurasi untuk menu navigasi umum (Mahasiswa)
     const menuItems = [
-        { id: 'beranda', label: 'Beranda' },
-        { id: 'cari', label: 'Cari Barang' },
-        { id: 'lapor', label: 'Lapor Barang' }, // ID sudah 'lapor' agar pas dengan App.jsx
-        { id: 'laporan-saya', label: 'Laporan Saya' },
+        { id: 'beranda', label: '🏠 Beranda' },
+        { id: 'cari', label: '🔍 Cari Barang' },
+        { id: 'lapor', label: '📢 Lapor Kehilangan' },
+        { id: 'laporan-saya', label: '📄 Laporan Saya' },
     ];
 
     return (
         <nav style={{
+            background: '#ffffff',
+            borderBottom: '1px solid #e2e8f0',
+            padding: '0.8rem 2rem',
             position: 'sticky',
             top: 0,
             zIndex: 100,
-            background: '#ffffff', /* Latar belakang putih bersih */
-            borderBottom: '1px solid var(--border)',
-            padding: '0.5rem 0',
-            boxShadow: '0 2px 10px rgba(14, 165, 233, 0.05)' /* Efek shadow tipis biru muda */
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
         }}>
-            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '60px' }}>
+            {/* Brand Logo Aplikasi */}
+            <div
+                onClick={() => onNavigate(userRole === 'admin' ? 'admin' : 'beranda')}
+                style={{ fontSize: '1.3rem', fontWeight: '800', color: '#0ea5e9', cursor: 'pointer', letterSpacing: '0.5px' }}
+            >
+                🔗 LOST<span style={{ color: '#1e293b' }}>LYNK</span>
+            </div>
 
-                {/* Logo Brand */}
-                <h2 style={{ fontSize: '1.4rem', fontWeight: '700', cursor: 'pointer', margin: 0 }} onClick={() => onNavigate('beranda')}>
-                    Lost<span style={{ color: 'var(--accent)' }}>Lynk</span>
-                </h2>
+            {/* Barisan Menu Tombol Navigasi Dinamis */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
 
-                {/* Menu Navigasi */}
-                <div style={{ display: 'flex', gap: '2rem' }}>
-                    {menuItems.map((item) => {
-                        const isActive = currentPage === item.id;
-                        return (
-                            <span
-                                key={item.id}
-                                onClick={() => onNavigate(item.id)}
-                                style={{
-                                    cursor: 'pointer',
-                                    fontSize: '0.95rem',
-                                    fontWeight: isActive ? '600' : '500',
-                                    color: isActive ? 'var(--accent)' : 'var(--muted)',
-                                    borderBottom: isActive ? '2px solid var(--accent)' : '2px solid transparent',
-                                    padding: '0.5rem 0',
-                                    transition: 'all 0.2s ease'
-                                }}
-                            >
-                                {item.label}
-                            </span>
-                        );
-                    })}
-                </div>
+                {/* TAMPILKAN MENU INI HANYA JIKA USER BERPERAN SEBAGAI MAHASISWA */}
+                {userRole === 'user' && menuItems.map((item) => {
+                    const isActive = currentView === item.id;
+                    return (
+                        <button
+                            key={item.id}
+                            onClick={() => onNavigate(item.id)}
+                            style={{
+                                padding: '0.5rem 1rem',
+                                borderRadius: '8px',
+                                border: 'none',
+                                fontSize: '0.9rem',
+                                fontWeight: isActive ? '600' : '400',
+                                background: isActive ? '#f0f9ff' : 'transparent',
+                                color: isActive ? '#0ea5e9' : '#64748b',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            {item.label}
+                        </button>
+                    );
+                })}
 
-                {/* Tombol Keluar */}
+                {/* TAMPILKAN TOMBOL INI HANYA JIKA USER BERPERAN SEBAGAI ADMIN */}
+                {userRole === 'admin' && (
+                    <button
+                        onClick={() => onNavigate('admin')}
+                        style={{
+                            padding: '0.5rem 1rem',
+                            borderRadius: '8px',
+                            border: '1px solid #fee2e2',
+                            fontSize: '0.9rem',
+                            fontWeight: '600',
+                            background: currentView === 'admin' ? '#fee2e2' : '#fff',
+                            color: '#ef4444',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                        }}
+                    >
+                        🔒 Admin Control Dashboard
+                    </button>
+                )}
+
+                {/* Pembatas Visual Antara Menu Utama dan Tombol Keluar */}
+                <div style={{ width: '1px', height: '20px', background: '#cbd5e1', margin: '0 0.5rem' }} />
+
+                {/* Tombol Keluar / Logout Global */}
                 <button
-                    className="btn btn-secondary"
+                    onClick={onLogout}
                     style={{
-                        padding: '0.4rem 1.2rem',
-                        fontSize: '0.85rem',
-                        borderColor: 'var(--accent-light)',
-                        color: 'var(--accent-mid)'
+                        padding: '0.5rem 1rem',
+                        borderRadius: '8px',
+                        border: 'none',
+                        fontSize: '0.9rem',
+                        fontWeight: '500',
+                        background: 'transparent',
+                        color: '#64748b',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
                     }}
-                    onClick={() => onNavigate('login')}
+                    onMouseEnter={(e) => e.target.style.color = '#ef4444'}
+                    onMouseLeave={(e) => e.target.style.color = '#64748b'}
                 >
-                    Keluar
+                    🚪 Keluar
                 </button>
-
             </div>
         </nav>
     );
