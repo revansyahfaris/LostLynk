@@ -1,86 +1,129 @@
 import React, { useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 const Login = ({ onLoginSuccess }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isRegister, setIsRegister] = useState(false);
+  const [nama, setNama] = useState('');
 
-  // 1. Handler Login via SSO Undip (Otomatis masuk sebagai User/Mahasiswa)
-  const handleSSOLogin = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      onLoginSuccess({ name: 'Sharon Tabitha', role: 'user' });
-    }, 1200);
-  };
-
-  // 2. Handler Form Login Biasa (Deteksi Akun Khusus Admin)
-  const handleNormalLogin = (e) => {
+  // Login pakai email + password via Supabase
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (!username || !password) {
-      alert('Harap isi username dan password kamu!');
+    if (!email || !password) {
+      setError('Harap isi email dan password!');
       return;
     }
 
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
+    setError('');
 
-      // GERBANG RAHASIA: Cek apakah kredensial yang dimasukkan adalah milik Admin
-      if (username === 'admin.tekkom' && password === 'undip2026') {
-        onLoginSuccess({ name: 'Laboran Tekkom', role: 'admin' });
-      } else {
-        // Jika username & password lain, masuk sebagai Mahasiswa/User biasa via jalur reguler
-        onLoginSuccess({ name: username, role: 'user' });
-      }
-    }, 1200);
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (loginError) {
+      setError('Email atau password salah!');
+      setIsLoading(false);
+      return;
+    }
+
+    // Ambil data profil user dari tabel users
+    const { data: userData } = await supabase
+      .from('users')
+      .select('nama, role')
+      .eq('user_id', data.user.id)
+      .single();
+
+    setIsLoading(false);
+    onLoginSuccess({
+      name: userData?.nama || email,
+      role: userData?.role || 'user',
+    });
+  };
+
+  // Register akun baru
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (!email || !password || !nama) {
+      setError('Harap isi semua kolom!');
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    const { error: registerError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { nama }, // dikirim ke trigger handle_new_user
+      },
+    });
+
+    if (registerError) {
+      setError('Gagal daftar: ' + registerError.message);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(false);
+    alert('Pendaftaran berhasil! Silakan login.');
+    setIsRegister(false);
   };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: 'var(--cream)', padding: '1rem' }}>
       <div style={{ background: '#ffffff', width: '100%', maxWidth: '420px', borderRadius: '20px', padding: '2.5rem', boxShadow: '0 10px 30px rgba(14, 165, 233, 0.08)', textAlign: 'center' }}>
 
-        {/* Logo Utama */}
+        {/* Logo */}
         <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--accent)', letterSpacing: '0.5px', marginBottom: '0.5rem' }}>
           🔗 LOST<span style={{ color: 'var(--black)' }}>LYNK</span>
         </div>
-        <p style={{ color: 'var(--muted)', fontSize: '0.85rem', marginBottom: '2rem' }}>Sistem Pelaporan Hub Logistik Barang Hilang Teknik Komputer</p>
+        <p style={{ color: 'var(--muted)', fontSize: '0.85rem', marginBottom: '2rem' }}>
+          Sistem Pelaporan Hub Logistik Barang Hilang Teknik Komputer
+        </p>
 
-        {/* OPSI 1: LOGIN SSO */}
-        <button
-          onClick={handleSSOLogin}
-          disabled={isLoading}
-          style={{
-            width: '100%', padding: '0.85rem', borderRadius: '12px', border: 'none', background: 'var(--accent)', color: '#fff',
-            fontWeight: '600', fontSize: '0.9rem', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem',
-            boxShadow: '0 4px 12px rgba(14, 165, 233, 0.2)', transition: 'all 0.2s'
-          }}
-          onMouseEnter={(e) => e.target.style.background = 'var(--accent-mid)'}
-          onMouseLeave={(e) => e.target.style.background = 'var(--accent)'}
-        >
-          {isLoading ? <span className="spinner"></span> : '🛡️ Masuk via SSO Undip'}
-        </button>
+        {/* Tampilkan error */}
+        {error && (
+          <div style={{ background: '#fee2e2', color: '#dc2626', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>
+            {error}
+          </div>
+        )}
 
-        {/* Pembatas Tampilan */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '2rem 0', color: 'var(--border)' }}>
-          <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
-          <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontWeight: '500' }}>ATAU MASUK BIASA</span>
-          <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
-        </div>
+        {/* Form Login atau Register */}
+        <form onSubmit={isRegister ? handleRegister : handleLogin} style={{ textAlign: 'left' }}>
 
-        {/* OPSI 2: FORM LOGIN BIASA (UMUM) */}
-        <form onSubmit={handleNormalLogin} style={{ textAlign: 'left' }}>
+          {/* Kolom Nama — hanya muncul saat Register */}
+          {isRegister && (
+            <div className="form-group" style={{ marginBottom: '1rem' }}>
+              <label className="form-label">Nama Lengkap</label>
+              <input
+                className="form-input"
+                type="text"
+                placeholder="Nama lengkap kamu..."
+                value={nama}
+                onChange={(e) => setNama(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+          )}
+
           <div className="form-group">
-            <label className="form-label">Username / Email</label>
+            <label className="form-label">Email</label>
             <input
               className="form-input"
-              type="text"
-              placeholder="Masukkan username kamu..."
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              placeholder="email@students.undip.ac.id"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
             />
           </div>
+
           <div className="form-group" style={{ marginTop: '1rem' }}>
             <label className="form-label">Password</label>
             <input
@@ -100,12 +143,21 @@ const Login = ({ onLoginSuccess }) => {
               width: '100%', marginTop: '1.5rem', padding: '0.85rem', borderRadius: '12px', border: 'none',
               background: 'var(--ink)', color: '#fff', fontWeight: '600', fontSize: '0.9rem', cursor: 'pointer', transition: 'all 0.2s'
             }}
-            onMouseEnter={(e) => e.target.style.background = '#0f172a'}
-            onMouseLeave={(e) => e.target.style.background = 'var(--ink)'}
           >
-            {isLoading ? <span className="spinner"></span> : 'Masuk ke Akun'}
+            {isLoading ? '⏳ Memproses...' : isRegister ? 'Daftar Akun' : 'Masuk ke Akun'}
           </button>
         </form>
+
+        {/* Toggle Login/Register */}
+        <p style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--muted)' }}>
+          {isRegister ? 'Sudah punya akun? ' : 'Belum punya akun? '}
+          <span
+            onClick={() => { setIsRegister(!isRegister); setError(''); }}
+            style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }}
+          >
+            {isRegister ? 'Masuk' : 'Daftar'}
+          </span>
+        </p>
 
       </div>
     </div>
