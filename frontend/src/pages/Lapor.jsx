@@ -42,12 +42,14 @@ const Lapor = ({ onNavigate }) => {
           .from('item-photos')
           .upload(fileName, fotoFile);
 
-        if (!uploadError) {
-          const { data: urlData } = supabase.storage
-            .from('item-photos')
-            .getPublicUrl(fileName);
-          fotoUrl = urlData.publicUrl;
+        if (uploadError) {
+          throw new Error('Gagal mengunggah foto ke Storage: ' + uploadError.message + '\n\nPastikan Anda telah membuat bucket "item-photos" di Supabase Dashboard dan mengeset statusnya sebagai Public.');
         }
+
+        const { data: urlData } = supabase.storage
+          .from('item-photos')
+          .getPublicUrl(fileName);
+        fotoUrl = urlData.publicUrl;
       }
 
       // Simpan ke tabel yang sesuai
