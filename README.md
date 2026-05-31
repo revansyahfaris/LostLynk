@@ -70,17 +70,8 @@ Aplikasi ini telah diperbarui dengan standar desain industri terkini:
 
 ---
 
-## 📦 Deployment
-
-Aplikasi ini siap dideploy ke platform seperti **Vercel** atau **Netlify**:
-1. Hubungkan repositori GitHub Anda ke Vercel/Netlify.
-2. Atur **Build Command** ke `npm run build` dan **Output Directory** ke `dist`.
-3. Tambahkan **Environment Variables** (`VITE_SUPABASE_URL` & `VITE_SUPABASE_PUBLISHABLE_KEY`) pada dashboard deployment.
-
----
-
 ## 📄 Lisensi
-Proyek ini dikembangkan untuk kebutuhan internal sistem informasi logistik kampus.
+Proyek ini dikembangkan untuk kebutuhan tugas mata kuliah rekayasa perangkat lunak.
 
 ---
 *Dibuat dengan ❤️ untuk UNDIP yang lebih tertata.*
