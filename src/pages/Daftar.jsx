@@ -37,18 +37,6 @@ const Daftar = ({ onNavigate }) => {
 
       if (registerError) throw registerError;
 
-      if (authData.user) {
-        const { error: dbError } = await supabase.from('users').insert({
-          user_id: authData.user.id,
-          nama,
-          nim,
-          email,
-          role: 'user'
-        });
-
-        if (dbError) throw dbError;
-      }
-
       alert('Pendaftaran berhasil! Silakan login.');
       onNavigate('login');
     } catch (err) {
