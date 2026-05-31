@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import { Package, Search, Handshake, ShieldCheck, ArrowRight } from 'lucide-react';
 
 const Beranda = ({ onNavigate }) => {
   // ---- ANIMASI TYPEWRITER ----
@@ -34,9 +35,9 @@ const Beranda = ({ onNavigate }) => {
 
   // ---- STATISTIK REAL DARI SUPABASE ----
   const [stats, setStats] = useState([
-    { angka: '–', label: 'Barang Ditemukan', ikon: '📦' },
-    { angka: '–', label: 'Laporan Aktif', ikon: '🔍' },
-    { angka: '–', label: 'Sukses Kembali', ikon: '🤝' },
+    { angka: '–', label: 'Barang Ditemukan', ikon: <Package size={24} color="#0ea5e9" /> },
+    { angka: '–', label: 'Laporan Aktif', ikon: <Search size={24} color="#0ea5e9" /> },
+    { angka: '–', label: 'Sukses Kembali', ikon: <Handshake size={24} color="#0ea5e9" /> },
   ]);
   const [statsLoading, setStatsLoading] = useState(true);
 
@@ -46,26 +47,21 @@ const Beranda = ({ onNavigate }) => {
 
   const fetchStats = async () => {
     try {
-      // Jalankan semua query count secara paralel
       const [
         { count: totalFound },
         { count: totalLost },
         { count: completedFound },
         { count: completedLost },
       ] = await Promise.all([
-        // Total barang ditemukan (semua found_item)
         supabase.from('found_item').select('*', { count: 'exact', head: true }),
-        // Total laporan kehilangan aktif (lost_item selain completed)
         supabase
           .from('lost_item')
           .select('*', { count: 'exact', head: true })
           .neq('status', 'completed'),
-        // Sukses kembali dari found_item
         supabase
           .from('found_item')
           .select('*', { count: 'exact', head: true })
           .eq('status', 'completed'),
-        // Sukses kembali dari lost_item juga dihitung
         supabase
           .from('lost_item')
           .select('*', { count: 'exact', head: true })
@@ -73,17 +69,16 @@ const Beranda = ({ onNavigate }) => {
       ]);
 
       setStats([
-        { angka: String(totalFound ?? 0), label: 'Barang Ditemukan', ikon: '📦' },
-        { angka: String(totalLost ?? 0), label: 'Laporan Aktif', ikon: '🔍' },
+        { angka: String(totalFound ?? 0), label: 'Barang Ditemukan', ikon: <Package size={24} color="#0ea5e9" /> },
+        { angka: String(totalLost ?? 0), label: 'Laporan Aktif', ikon: <Search size={24} color="#0ea5e9" /> },
         {
           angka: String((completedFound ?? 0) + (completedLost ?? 0)),
           label: 'Sukses Kembali',
-          ikon: '🤝',
+          ikon: <Handshake size={24} color="#0ea5e9" />,
         },
       ]);
     } catch (err) {
       console.error('Gagal fetch stats:', err.message);
-      // Biarkan tampil "–" jika gagal, tidak crash halaman
     } finally {
       setStatsLoading(false);
     }
@@ -96,7 +91,7 @@ const Beranda = ({ onNavigate }) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '3rem',
           alignItems: 'center',
           marginBottom: '4rem',
@@ -107,21 +102,25 @@ const Beranda = ({ onNavigate }) => {
             style={{
               background: 'var(--accent-light)',
               color: 'var(--accent-mid)',
-              padding: '0.3rem 0.8rem',
+              padding: '0.4rem 1rem',
               borderRadius: '20px',
-              fontSize: '0.8rem',
-              fontWeight: 'bold',
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem'
             }}
           >
-            PORTAL RESMI UNDIP
+            <ShieldCheck size={14} /> PORTAL RESMI LOSTLYNK
           </span>
 
           <h1
             style={{
-              fontSize: '2.4rem',
-              margin: '1rem 0',
-              lineHeight: '1.3',
-              minHeight: '90px',
+              fontSize: '2.8rem',
+              margin: '1.2rem 0',
+              lineHeight: '1.2',
+              minHeight: '100px',
+              letterSpacing: '-0.5px'
             }}
           >
             Temukan Kembali <br />
@@ -129,23 +128,23 @@ const Beranda = ({ onNavigate }) => {
               style={{
                 color: 'var(--accent)',
                 borderRight: '3px solid var(--accent)',
-                paddingRight: '4px',
+                paddingRight: '6px',
               }}
             >
               {text}
             </span>
           </h1>
 
-          <p style={{ color: 'var(--muted)', marginBottom: '2rem' }}>
-            Laporkan penemuan barang tercepat atau cari barang berhargamu yang hilang di seluruh
-            area Universitas Diponegoro.
+          <p style={{ color: 'var(--muted)', marginBottom: '2.5rem', fontSize: '1.05rem', lineHeight: '1.7' }}>
+            Sistem pelaporan dan pelacakan logistik barang hilang terpadu di lingkungan Universitas Diponegoro. 
+            Transparan, Cepat, dan Terpercaya.
           </p>
 
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <button className="btn btn-accent" onClick={() => onNavigate('lapor')}>
-              Lapor Penemuan
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <button className="btn btn-accent" onClick={() => onNavigate('lapor')} style={{ padding: '0.8rem 1.8rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              Lapor Penemuan <ArrowRight size={18} />
             </button>
-            <button className="btn btn-secondary" onClick={() => onNavigate('cari')}>
+            <button className="btn btn-secondary" onClick={() => onNavigate('cari')} style={{ padding: '0.8rem 1.8rem' }}>
               Cari di Galeri
             </button>
           </div>
@@ -154,37 +153,47 @@ const Beranda = ({ onNavigate }) => {
         {/* Ilustrasi kanan */}
         <div
           style={{
-            background: 'var(--cream)',
-            borderRadius: '24px',
-            height: '320px',
+            background: 'linear-gradient(135deg, var(--cream) 0%, #e0f2fe 100%)',
+            borderRadius: '32px',
+            height: '380px',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             border: '1px solid var(--accent-light)',
-            transition: 'transform 0.4s ease, box-shadow 0.4s ease',
+            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
             cursor: 'pointer',
+            position: 'relative',
+            overflow: 'hidden'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 12px 30px rgba(14, 165, 233, 0.1)';
+            e.currentTarget.style.transform = 'translateY(-12px)';
+            e.currentTarget.style.boxShadow = '0 20px 40px rgba(14, 165, 233, 0.15)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.boxShadow = 'none';
           }}
         >
-          <div style={{ textAlign: 'center' }}>
-            <span style={{ fontSize: '4rem', display: 'block', marginBottom: '1rem' }}>🔗</span>
+          <div style={{ textAlign: 'center', zIndex: 2 }}>
+            <div style={{ background: '#fff', width: '80px', height: '80px', borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', boxShadow: '0 8px 16px rgba(0,0,0,0.05)' }}>
+                <Package size={40} color="var(--accent)" />
+            </div>
             <span
               style={{
-                color: 'var(--accent-mid)',
-                fontWeight: 'bold',
+                color: 'var(--ink)',
+                fontWeight: '800',
                 letterSpacing: '1px',
+                fontSize: '1.1rem',
+                display: 'block'
               }}
             >
-              LOSTLYNK DASHBOARD
+              LOSTLYNK HUB
             </span>
+            <span style={{ color: 'var(--muted)', fontSize: '0.85rem', marginTop: '0.3rem', display: 'block' }}>Logistik & Verifikasi</span>
           </div>
+          {/* Decorative circles */}
+          <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(14, 165, 233, 0.05)' }} />
+          <div style={{ position: 'absolute', bottom: '-40px', left: '-20px', width: '150px', height: '150px', borderRadius: '50%', background: 'rgba(14, 165, 233, 0.03)' }} />
         </div>
       </div>
 
@@ -192,7 +201,7 @@ const Beranda = ({ onNavigate }) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: '1.5rem',
           marginBottom: '4rem',
         }}
@@ -203,18 +212,18 @@ const Beranda = ({ onNavigate }) => {
             style={{
               background: '#ffffff',
               border: '1px solid var(--border)',
-              borderRadius: '16px',
-              padding: '1.5rem',
+              borderRadius: '20px',
+              padding: '1.8rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '1.2rem',
+              gap: '1.5rem',
               transition: 'all 0.3s ease',
               boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = 'var(--accent)';
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 6px 16px rgba(14, 165, 233, 0.08)';
+              e.currentTarget.style.transform = 'translateY(-6px)';
+              e.currentTarget.style.boxShadow = '0 12px 24px rgba(14, 165, 233, 0.08)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = 'var(--border)';
@@ -224,10 +233,13 @@ const Beranda = ({ onNavigate }) => {
           >
             <div
               style={{
-                fontSize: '2.2rem',
-                background: 'var(--cream)',
-                padding: '0.5rem',
-                borderRadius: '12px',
+                background: 'var(--accent-light)',
+                width: '56px',
+                height: '56px',
+                borderRadius: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
               {item.ikon}
@@ -235,9 +247,9 @@ const Beranda = ({ onNavigate }) => {
             <div>
               <h3
                 style={{
-                  fontSize: '1.8rem',
+                  fontSize: '2rem',
                   margin: 0,
-                  fontWeight: '700',
+                  fontWeight: '800',
                   color: statsLoading ? '#cbd5e1' : 'var(--ink)',
                   transition: 'color 0.3s',
                 }}
@@ -248,7 +260,7 @@ const Beranda = ({ onNavigate }) => {
                 style={{
                   margin: 0,
                   color: 'var(--muted)',
-                  fontSize: '0.9rem',
+                  fontSize: '0.95rem',
                   fontWeight: '500',
                 }}
               >
