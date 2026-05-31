@@ -46,9 +46,7 @@ const Daftar = ({ onNavigate }) => {
           role: 'user'
         });
 
-        if (dbError) {
-          console.error('Gagal menyimpan ke tabel users:', dbError.message);
-        }
+        if (dbError) throw dbError;
       }
 
       alert('Pendaftaran berhasil! Silakan login.');
