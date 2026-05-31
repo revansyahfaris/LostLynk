@@ -35,11 +35,21 @@ const Daftar = ({ onNavigate }) => {
         },
       });
 
-      if (registerError) throw registerError;
+      console.log("--- DEBUG REGISTRATION ---");
+      console.log("AUTH DATA:", authData);
+      console.log("REGISTER ERROR:", registerError);
+
+      if (registerError) {
+        console.error("FULL REGISTER ERROR OBJECT:", registerError);
+        throw registerError;
+      }
 
       alert('Pendaftaran berhasil! Silakan login.');
       onNavigate('login');
     } catch (err) {
+      console.log("--- CATCH ERROR ---");
+      console.log("RAW ERR:", err);
+      console.log("JSON ERR:", JSON.stringify(err, null, 2));
       setError('Gagal daftar: ' + err.message);
     } finally {
       setIsLoading(false);
