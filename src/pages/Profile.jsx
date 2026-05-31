@@ -87,9 +87,9 @@ const Profile = ({ userSession }) => {
                     <div style={{ background: '#fff', padding: '0.8rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.03)' }}>
                         <Mail size={20} color="var(--accent)" />
                     </div>
-                    <div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                         <span style={{ fontSize: '0.75rem', color: 'var(--muted)', display: 'block', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.2rem' }}>Email Institusi</span>
-                        <span style={{ fontWeight: '700', fontSize: '1.1rem', color: 'var(--ink)' }}>{profile?.email || '-'}</span>
+                        <span style={{ fontWeight: '700', fontSize: '1.1rem', color: 'var(--ink)', wordBreak: 'break-all', overflowWrap: 'anywhere' }}>{profile?.email || '-'}</span>
                     </div>
                 </div>
             </div>
