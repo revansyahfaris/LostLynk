@@ -1,16 +1,86 @@
-# React + Vite
+# 🔗 LOSTLYNK
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Demo:** [lost-lynk.vercel.app](https://lost-lynk.vercel.app/)
 
-Currently, two official plugins are available:
+**LostLynk** adalah platform logistik terpadu untuk pelaporan dan pelacakan barang hilang/temuan di lingkungan Universitas Diponegoro (UNDIP). Aplikasi ini dirancang untuk menghubungkan mahasiswa dan administrator laboratorium/gedung dalam satu ekosistem yang transparan, efisien, dan terverifikasi.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Fitur Utama
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎓 Bagi Mahasiswa
+- **Pendaftaran Terverifikasi:** Keamanan akun menggunakan bukti identitas ganda (NIM & Email Institusi).
+- **Pelaporan Real-Time:** Unggah penemuan atau kehilangan barang dengan kewajiban dokumentasi foto untuk validasi.
+- **Galeri Logistik:** Telusuri database barang yang ditemukan atau hilang dengan fitur pencarian dan filter lokasi yang cerdas.
+- **Sistem Klaim Mandiri:** Ajukan bukti kepemilikan langsung melalui platform untuk barang yang ditemukan oleh orang lain.
+- **Riwayat Aktivitas:** Pantau tahapan logistik barang Anda (Dilaporkan → Diverifikasi → Di Loket → Selesai).
+- **Profil Personal:** Dashboard statistik pribadi untuk memantau kontribusi laporan Anda.
 
-## Expanding the ESLint configuration
+### 🛡️ Bagi Administrator (Otoritas Laboran)
+- **Pusat Kendali Logistik:** Manajemen seluruh laporan masuk dalam satu dashboard terintegrasi.
+- **Kendali Tahapan Fisik:** Otorisasi pembaruan status barang dari tahap laporan hingga siap diambil di loket.
+- **Moderasi Klaim:** Verifikasi bukti kepemilikan yang diajukan mahasiswa sebelum memberikan izin pengambilan barang.
+- **Arsip Digital:** Sistem pencatatan otomatis untuk setiap barang yang telah sukses diserahterimakan.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🎨 UI/UX Modern & Profesional
+Aplikasi ini telah diperbarui dengan standar desain industri terkini:
+- **Clean Interface:** Antarmuka bersih dengan palet warna biru aksen LostLynk yang menenangkan dan profesional.
+- **Iconography:** Menggunakan library `lucide-react` untuk elemen visual yang elegan dan informatif.
+- **Fully Responsive:** Layout fleksibel yang optimal baik di desktop maupun perangkat mobile.
+- **Interactive Feedback:** Animasi halus, indikator loading, dan modal detail yang memanjakan mata.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** [React.js](https://reactjs.org/) (Vite)
+- **Styling:** Vanilla CSS Modern (Custom Properties, Flexbox, & Grid)
+- **Backend-as-a-Service:** [Supabase](https://supabase.com/) (Auth, Database, Storage)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **State Management:** React Hooks (useState, useEffect)
+
+---
+
+## 🚀 Cara Menjalankan Lokal
+
+1. **Clone Repositori:**
+   ```bash
+   git clone https://github.com/username/lostlynk.git
+   cd lostlynk
+   ```
+
+2. **Instal Dependensi:**
+   ```bash
+   npm install
+   ```
+
+3. **Konfigurasi Environment:**
+   Buat file `.env` di root folder dan tambahkan kredensial Supabase Anda:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_project_url
+   VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+   ```
+
+4. **Jalankan Aplikasi:**
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 📦 Deployment
+
+Aplikasi ini siap dideploy ke platform seperti **Vercel** atau **Netlify**:
+1. Hubungkan repositori GitHub Anda ke Vercel/Netlify.
+2. Atur **Build Command** ke `npm run build` dan **Output Directory** ke `dist`.
+3. Tambahkan **Environment Variables** (`VITE_SUPABASE_URL` & `VITE_SUPABASE_PUBLISHABLE_KEY`) pada dashboard deployment.
+
+---
+
+## 📄 Lisensi
+Proyek ini dikembangkan untuk kebutuhan internal sistem informasi logistik kampus.
+
+---
+*Dibuat dengan ❤️ untuk UNDIP yang lebih tertata.*
