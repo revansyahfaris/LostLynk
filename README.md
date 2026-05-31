@@ -47,7 +47,7 @@ Aplikasi ini telah diperbarui dengan standar desain industri terkini:
 
 1. **Clone Repositori:**
    ```bash
-   git clone https://github.com/username/lostlynk.git
+   git clone https://github.com/revansyahfaris/LostLynk.git
    cd lostlynk
    ```
 
